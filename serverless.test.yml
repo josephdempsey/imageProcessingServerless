@@ -1,0 +1,9 @@
+# Following serverless docs looks like you can run integration tests via matching yml file but now only supported in enterprise mode
+- name: upload an image
+  endpoint: {function: upload}
+  request:
+    body:
+      imageBase64: nackjnasdknlkdklaDLNAlkdnalDAnds
+      name: 'image1'
+  response:
+    body: "info: image details"

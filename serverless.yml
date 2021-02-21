@@ -1,0 +1,49 @@
+service: uploadToS3
+
+frameworkVersion: ">=1.1.0"
+
+custom:
+  bucket: imageStore
+  localstack:
+    stages:
+      - local
+    host: http://localhost
+    endpointFile: resources/localstack/localstack_endpoints.json
+    lambda:
+      mountCode: True
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    NODE_ENV: dev
+
+functions:
+  unknownRoute404:
+    handler: target/app/handlers/unknownRoute404Handler.unknownRoute404
+    events:
+      - http:
+          path: /
+          method: get
+  upload:
+    handler: target/app/handlers/uploadHandler.upload
+    events:
+      - http:
+          path: upload
+          method: post
+  download:
+    handler: target/app/handlers/downloadHandler.download
+    events:
+      - http:
+          path: download
+          method: get
+  downloadByFormat:
+    handler: target/app/handlers/downloadByFormatHandler.downloadByFormat
+    events:
+      - http:
+          path: downloadByFormat
+          method: get
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-localstack
+  - serverless-offline
