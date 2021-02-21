@@ -44,14 +44,6 @@ describe('s3 Service', () => {
     expect(mS3Instance.getObject).toBeCalledWith({ Bucket: config.bucketName, Key: 'fileName' });
   });
 
-  it('should upload and return upload information', async () => {
-    mS3Instance.promise.mockResolvedValueOnce('S3 Upload Information');
-    const s3Service = new S3Service();
-    const actual = await s3Service.uploadImage(Buffer.from('Image'), 'fileName');
-    expect(actual).toEqual('S3 Upload Information');
-    expect(mS3Instance.getObject).toBeCalledWith({ Bucket: config.bucketName, Key: 'fileName' });
-  });
-
   it('should throw if image does not exist', async () => {
     mS3Instance.promise.mockResolvedValueOnce({
       Body: '',
