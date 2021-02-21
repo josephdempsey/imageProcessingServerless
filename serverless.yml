@@ -30,6 +30,18 @@ functions:
       - http:
           path: upload
           method: post
+  download:
+    handler: target/app/handlers/downloadHandler.download
+    events:
+      - http:
+          path: download
+          method: get
+  downloadByFormat:
+    handler: target/app/handlers/downloadByFormatHandler.downloadByFormat
+    events:
+      - http:
+          path: downloadByFormat
+          method: get
 
 plugins:
   - serverless-plugin-typescript

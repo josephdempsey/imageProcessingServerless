@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { IImageStore } from './IImageStore';
 
 export class ImageStore implements IImageStore {
@@ -10,5 +9,9 @@ export class ImageStore implements IImageStore {
 
     async uploadImage(file: Buffer, name: string): Promise<any> {
       return this.imageStoreService.uploadImage(file, name);
+    }
+
+    async downloadImage(fileName: string) {
+      return this.imageStoreService.downloadImage(fileName);
     }
 }

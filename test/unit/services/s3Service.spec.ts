@@ -30,4 +30,39 @@ describe('s3 Service', () => {
     expect(actual).toEqual('S3 Upload Information');
     expect(mS3Instance.upload).toBeCalledWith({ Bucket: config.bucketName, Key: 'fileName', Body: Buffer.from('Image') });
   });
+
+  it('should throw if download fails', async () => {
+    const error = new Error('download failed');
+    mS3Instance.promise.mockRejectedValueOnce(error);
+    const s3Service = new S3Service();
+    try {
+      await s3Service.downloadImage('fileName');
+    } catch (err) {
+      expect(err).toEqual(error);
+    }
+
+    expect(mS3Instance.getObject).toBeCalledWith({ Bucket: config.bucketName, Key: 'fileName' });
+  });
+
+  it('should upload and return upload information', async () => {
+    mS3Instance.promise.mockResolvedValueOnce('S3 Upload Information');
+    const s3Service = new S3Service();
+    const actual = await s3Service.uploadImage(Buffer.from('Image'), 'fileName');
+    expect(actual).toEqual('S3 Upload Information');
+    expect(mS3Instance.getObject).toBeCalledWith({ Bucket: config.bucketName, Key: 'fileName' });
+  });
+
+  it('should throw if image does not exist', async () => {
+    mS3Instance.promise.mockResolvedValueOnce({
+      Body: '',
+    });
+    const s3Service = new S3Service();
+    try {
+      await s3Service.downloadImage('fileName');
+    } catch (err) {
+      expect(err.message).toEqual('Image does not exist');
+    }
+
+    expect(mS3Instance.getObject).toBeCalledWith({ Bucket: config.bucketName, Key: 'fileName' });
+  });
 });

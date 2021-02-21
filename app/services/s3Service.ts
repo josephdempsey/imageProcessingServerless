@@ -5,7 +5,7 @@ import { config } from '../config';
 const {
   bucketName,
   region,
-  endpoint
+  endpoint,
 } = config;
 
 export class S3Service implements IImageStore {
@@ -14,7 +14,7 @@ export class S3Service implements IImageStore {
   constructor() {
     this.s3 = new S3({
       region,
-      endpoint
+      endpoint,
     });
   }
 
@@ -25,6 +25,22 @@ export class S3Service implements IImageStore {
       return uploadInfo;
     } catch (error) {
       console.log(error, `bucket: ${bucketName}, Key: ${name}`);
+
+      throw error;
+    }
+  }
+
+  async downloadImage(fileName: string): Promise<any> {
+    try {
+      const downloadInfo = await this.s3.getObject({ Bucket: bucketName, Key: fileName }).promise();
+
+      if (!downloadInfo.Body) {
+        throw new Error('Image does not exist');
+      }
+
+      return downloadInfo.Body;
+    } catch (error) {
+      console.log(error, `bucket: ${bucketName}, Key: ${fileName}`);
 
       throw error;
     }

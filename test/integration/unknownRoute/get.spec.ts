@@ -1,3 +1,4 @@
+// @ts-ignore
 import lambdaTester from 'lambda-tester';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { unknownRoute404 } from '../../../app/handlers/unknownRoute404Handler';
