@@ -2,6 +2,20 @@
   "name": "imageProcessingServerless",
   "version": "1.0.0",
   "description": "Image Processing Serverless",
+  "scripts": {
+    "local": "npm run build && npm run clean-serverless && npm run deploy-local",
+    "local-server": "SLS_DEBUG=* serverless offline",
+    "create-bucket": "aws --endpoint-url=http://localhost:4566 s3 mb s3://imageStore --region us-east-1 && aws --endpoint-url=http://localhost:4566 s3api put-bucket-acl --bucket imageStore --acl public-read",
+    "deploy-local": "SLS_DEBUG=* sls deploy --stage local --region us-east-1",
+    "clean": "rm -rf ./target",
+    "clean-serverless": "rm -rf ./.build && rm -rf ./.serverless",
+    "build": "npm run clean && npx tsc",
+    "test": "npm run lint:eslint && npm run test:unit && npm run test:integration",
+    "lint:eslint": "eslint --ext .ts .",
+    "fix": "eslint --ext .ts . --fix",
+    "test:unit": "LOG_LEVEL=silent jest test/unit",
+    "test:integration": "LOG_LEVEL=silent jest test/integration"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/josephdempsey/imageProcessingServerless.git"
