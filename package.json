@@ -40,7 +40,8 @@
   },
   "dependencies": {
     "aws-sdk": "^2.847.0",
-    "serverless-http": "^2.7.0"
+    "serverless-http": "^2.7.0",
+    "zod": "^2.0.0-beta.30"
   },
   "jest": {
     "roots": [
