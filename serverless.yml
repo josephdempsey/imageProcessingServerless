@@ -19,11 +19,17 @@ provider:
 
 functions:
   unknownRoute404:
-    handler: target/app/handler
+    handler: target/app/handlers/unknownRoute404Handler.unknownRoute404
     events:
       - http:
           path: /
           method: get
+  upload:
+    handler: target/app/handlers/uploadHandler.upload
+    events:
+      - http:
+          path: upload
+          method: post
 
 plugins:
   - serverless-plugin-typescript
